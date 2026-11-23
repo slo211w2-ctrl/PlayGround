@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101510">
+  <title>祭壇の間 — オンライン決闘</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="祭壇の間 ホーム"><span class="brand-mark">⟡</span><span><b>ALTAR DUEL</b><small>祭壇の間 · ONLINE</small></span></a>
+      <div class="room-status"><span class="live-dot"></span><span>WORLD ROOM</span><b id="roomName">#altar-07</b><span class="divider"></span><span id="onlineCount">128 人がオンライン</span></div>
+      <div class="top-actions"><button class="icon-button" id="soundToggle" aria-label="サウンド切替">♫</button><button class="profile"><span class="profile-gem">✦</span><span>DUELIST_07</span><i>▾</i></button></div>
+    </header>
+
+    <div class="layout">
+      <aside class="left-rail">
+        <section class="panel room-panel">
+          <div class="panel-heading"><div><span class="eyebrow">LIVE LOBBY</span><h2>オンラインルーム</h2></div><span class="online-pill"><i></i> LIVE</span></div>
+          <div class="room-list" id="roomList"></div>
+          <button class="create-room" id="createRoom"><span>＋</span> 新しいルームを作成</button>
+          <div class="lobby-note"><span>⟡</span><p>ルームは常時オープン。<br>世界中の決闘者とつながろう。</p></div>
+        </section>
+        <section class="panel world-chat">
+          <div class="panel-heading chat-heading"><div><span class="eyebrow">WORLD FEED</span><h2>ワールドコメント</h2></div><span class="feed-pulse"></span></div>
+          <div class="chat-feed" id="chatFeed" aria-live="polite"></div>
+          <form id="chatForm" class="chat-form"><input id="chatInput" maxlength="120" placeholder="コメントを送る..." autocomplete="off"><button aria-label="送信">↑</button></form>
+        </section>
+      </aside>
+
+      <section class="duel-area">
+        <div class="duel-topline"><div class="match-label"><span class="match-dot"></span> RANKED MATCH <span class="match-id">MATCH 07-2481</span></div><div class="turn-indicator"><span id="turnLabel">あなたのターン</span><b id="turnNumber">TURN 01</b></div><button class="menu-button" id="surrenderButton">⋯</button></div>
+        <section class="field" aria-label="デュエルフィールド">
+          <div class="field-glow"></div>
+          <div class="player-row opponent-row">
+            <div class="duelist-info opponent-info"><div class="avatar enemy-avatar">N</div><div><b>NOCTURNE</b><small>光の観測者</small></div><div class="lp-wrap"><span>LP</span><strong id="enemyLP">11000</strong><div class="lp-bar"><i id="enemyBar"></i></div></div></div>
+            <div class="opponent-hand" id="enemyHand"><span class="back-card"></span><span class="back-card"></span><span class="back-card"></span><span class="back-card"></span></div>
+          </div>
+          <div class="zones enemy-zones" id="enemyZones"></div>
+          <div class="field-mid"><span>ALTAR · 07</span><i></i><span id="phaseLabel">MAIN PHASE</span></div>
+          <div class="zones player-zones" id="playerZones"></div>
+          <div class="player-row user-row">
+            <div class="duelist-info"><div class="avatar user-avatar">Y</div><div><b>DUELIST_07</b><small>祭壇の継承者</small></div><div class="lp-wrap"><span>LP</span><strong id="playerLP">11000</strong><div class="lp-bar"><i id="playerBar"></i></div></div></div>
+            <div class="piles"><button class="pile" id="graveButton"><span class="pile-count" id="graveCount">0</span><span>墓地</span></button><button class="deck-pile" id="deckButton"><span id="deckCount">20</span><small>DECK</small></button></div>
+          </div>
+          <div class="fusion-slot"><span>FUSION</span><b id="fusionCount">01</b></div>
+          <div class="banished-slot"><span>除外</span><b id="banishedCount">00</b></div>
+          <div class="toast" id="toast" role="status"></div>
+        </section>
+        <div class="hand-area"><div class="hand-label"><span>YOUR HAND</span><b id="handCount">5 CARDS</b><small>カードを選択してアクション</small></div><div class="hand-cards" id="handCards"></div></div>
+        <div class="action-bar"><div class="selected-info"><span class="selection-mark">✦</span><span id="selectedLabel">カードを選択してください</span></div><div class="action-buttons"><button class="action-button summon" id="summonButton" disabled><span>◇</span> 召喚</button><button class="action-button set" id="setButton" disabled><span>▧</span> セット</button><button class="action-button attack" id="attackButton" disabled><span>⚔</span> 攻撃</button><button class="action-button pass" id="passButton">ターン終了 <span>→</span></button></div></div>
+      </section>
+
+      <aside class="right-rail">
+        <section class="panel card-inspector"><div class="panel-heading"><div><span class="eyebrow">CARD DETAIL</span><h2>カード情報</h2></div><span class="info-symbol">i</span></div><div id="cardDetail" class="card-detail empty-detail"><div class="empty-rune">✧</div><b>カードを選択</b><p>手札またはフィールドの<br>カードを選ぶと詳細を表示します。</p></div><div class="detail-tip"><span>⌘</span><p>カードをタップして選択。<br>召喚・セット・攻撃ができます。</p></div></section>
+        <section class="panel activity-panel"><div class="panel-heading"><div><span class="eyebrow">DUEL LOG</span><h2>決闘ログ</h2></div></div><div id="duelLog" class="duel-log"></div></section>
+      </aside>
+    </div>
+  </main>
+  <div class="modal-backdrop" id="modalBackdrop"><div class="modal"><span class="modal-rune">✧</span><h2 id="modalTitle">決闘を終了しますか？</h2><p id="modalText">この決闘を終了してルームに戻ります。</p><div><button id="modalCancel">続ける</button><button id="modalConfirm">決闘を終了</button></div></div></div>
+  <script src="game.js"></script>
+</body>
+</html>
